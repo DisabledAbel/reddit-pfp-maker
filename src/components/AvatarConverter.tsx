@@ -20,7 +20,7 @@ import {
 import { toast } from "sonner";
 import { removeBackground, loadImage } from "@/lib/backgroundRemoval";
 
-const DEFAULT_EXPORT = 512;
+const DEFAULT_EXPORT = 256;
 
 const fileToObjectURL = (file: Blob) => URL.createObjectURL(file);
 
@@ -141,16 +141,38 @@ export default function AvatarConverter() {
         return;
       }
       const canvas = await getCroppedCanvas();
-      canvas.toBlob((blob) => {
-        if (!blob) return toast.error("Export failed");
-        const link = document.createElement("a");
-        link.download = `reddit-pfp-${exportSize}.png`;
-        link.href = URL.createObjectURL(blob);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        toast.success("Downloaded");
-      }, "image/png");
+
+      const targetBytes = 200 * 1024; // 200KB
+      const qualities = [0.92, 0.85, 0.75, 0.65, 0.55, 0.45, 0.35];
+
+      const toBlob = (q: number) =>
+        new Promise<Blob | null>((resolve) =>
+          canvas.toBlob((b) => resolve(b), "image/webp", q)
+        );
+
+      let finalBlob: Blob | null = null;
+      for (const q of qualities) {
+        const b = await toBlob(q);
+        if (!b) continue;
+        finalBlob = b;
+        if (b.size <= targetBytes) break;
+      }
+
+      if (!finalBlob) return toast.error("Export failed");
+
+      if (finalBlob.size > targetBytes) {
+        toast.message(
+          `Compressed to ${Math.round(finalBlob.size / 1024)}KB (over 200KB). Try a simpler image.`
+        );
+      }
+
+      const link = document.createElement("a");
+      link.download = `reddit-pfp-256.webp`;
+      link.href = URL.createObjectURL(finalBlob);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      toast.success("Downloaded");
     } catch (e) {
       toast.error("Export failed");
     }
@@ -197,7 +219,7 @@ export default function AvatarConverter() {
           <CardHeader>
             <CardTitle>Upload & Adjust</CardTitle>
             <CardDescription>
-              Square crop recommended. Export sizes: 256 or 512 for best results.
+              Square crop recommended. Export is 256×256 (under 200KB).
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -256,19 +278,6 @@ export default function AvatarConverter() {
             )}
           </CardContent>
           <CardFooter className="flex flex-wrap items-center gap-3">
-            <Select
-              value={String(exportSize)}
-              onValueChange={(v) => setExportSize(parseInt(v))}
-            >
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Export size" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="256">256 x 256</SelectItem>
-                <SelectItem value="512">512 x 512</SelectItem>
-                <SelectItem value="1024">1024 x 1024</SelectItem>
-              </SelectContent>
-            </Select>
 
             <Button
               variant="secondary"
@@ -283,7 +292,7 @@ export default function AvatarConverter() {
             </Button>
 
             <Button onClick={handleDownload} disabled={!imageURL || processing}>
-              Download PNG
+              Download 256×256
             </Button>
 
             <Button
@@ -325,7 +334,7 @@ export default function AvatarConverter() {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground">Export is a transparent PNG masked to a perfect circle.</p>
+            <p className="text-xs text-muted-foreground">Export is a 256×256 WebP (with transparency) masked to a perfect circle.</p>
           </div>
         </Card>
       </div>
