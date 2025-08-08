@@ -165,6 +165,24 @@ export default function AvatarConverter() {
     setCroppedAreaPixels(null);
   };
 
+  const makeItFit = () => {
+    if (!imageEl) {
+      toast.error("Upload an image first");
+      return;
+    }
+    const w = imageEl.naturalWidth;
+    const h = imageEl.naturalHeight;
+    const side = Math.min(w, h);
+    const x = Math.floor((w - side) / 2);
+    const y = Math.floor((h - side) / 2);
+
+    setCroppedAreaPixels({ x, y, width: side, height: side });
+    setExportSize(256);
+    setZoom(1);
+    setCrop({ x: 0, y: 0 });
+    toast.success("Centered crop set — ready to download 256×256");
+  };
+
   return (
     <div className="space-y-8">
       <section className="app-hero rounded-xl p-8 text-center text-primary-foreground">
@@ -257,6 +275,10 @@ export default function AvatarConverter() {
               disabled={!imageURL || processing}
             >
               Reset
+            </Button>
+
+            <Button onClick={makeItFit} disabled={!imageURL || processing}>
+              Make it fit
             </Button>
 
             <Button onClick={handleDownload} disabled={!imageURL || processing}>
