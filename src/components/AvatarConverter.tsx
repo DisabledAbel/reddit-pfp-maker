@@ -211,15 +211,16 @@ export default function AvatarConverter() {
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground">Drag & drop an image here</p>
                   <div className="mt-3">
-                    <label className="inline-flex cursor-pointer items-center gap-2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={onInputChange}
-                        className="hidden"
-                      />
-                      <Button>Choose File</Button>
-                    </label>
+                    <input
+                      id="file-input"
+                      type="file"
+                      accept="image/*"
+                      onChange={onInputChange}
+                      className="hidden"
+                    />
+                    <Button asChild>
+                      <label htmlFor="file-input" className="cursor-pointer">Choose File</label>
+                    </Button>
                   </div>
                 </div>
               </div>
