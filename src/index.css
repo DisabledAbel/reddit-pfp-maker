@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,6 +38,19 @@ All colors MUST be HSL.
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    /* Brand and gradients */
+    --brand: 262 83% 58%;
+    --brand-foreground: 210 40% 98%;
+    --brand-soft: 262 83% 65%;
+    --accent-2: 175 70% 41%;
+    --gradient-primary: linear-gradient(135deg, hsl(var(--brand)) 0%, hsl(var(--accent-2)) 100%);
+    --gradient-muted: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
+
+    /* Shadows & motion */
+    --shadow-elev-1: 0 10px 30px -10px hsl(var(--brand) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--brand) / 0.35);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +115,23 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   }
+}
+
+@layer utilities {
+  .app-hero {
+    background-image: var(--gradient-primary);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  .card-elev {
+    box-shadow: var(--shadow-elev-1);
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

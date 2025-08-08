@@ -1,13 +1,17 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import AvatarConverter from "@/components/AvatarConverter";
+import { useEffect } from "react";
 
 const Index = () => {
+  useEffect(() => {
+    document.title = "Reddit Profile Picture Converter";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', 'Convert any image into a perfect Reddit profile picture: crop to circle, optional AI background removal, and export as transparent PNG.');
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="container mx-auto max-w-5xl py-10">
+      <AvatarConverter />
+    </main>
   );
 };
 
