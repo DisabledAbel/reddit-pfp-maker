@@ -20,20 +20,27 @@ Make a perfect Reddit avatar in seconds. Upload any image, crop to a circle, opt
 - @huggingface/transformers (background removal)
 
 ## Getting Started
-1. Install Node.js (LTS recommended).
-2. Install dependencies:
-   ```bash
-   npm i
-   ```
-3. Start dev server:
-   ```bash
-   npm run dev
-   ```
-4. Build for production:
-   ```bash
-   npm run build
-   npm run preview
-   ```
+
+# Reddit PFP Maker
+
+[![Install GitHub App](https://img.shields.io/badge/Install%20GitHub%20App-blue?style=for-the-badge&logo=github)](https://github.com/apps/reddit-pfp)
+
+A lightweight and accessible tool to generate profile pictures for Reddit and other platforms.
+
+---
+
+## How to Install
+
+1. **Click the button above** or [install here](https://github.com/apps/reddit-pfp).
+2. You’ll be taken to GitHub’s App installation page.
+3. Choose which repositories you want the app to access:
+   - **All repositories** (if you want it available everywhere), or
+   - **Only select repositories** (pick the ones you want).
+4. Click **Install**.
+5. The app will now be active on the chosen repositories and ready to use!
+
+---
+
 
 ## How to Use
 1. Click "Choose File" (or drag & drop) to load an image.
