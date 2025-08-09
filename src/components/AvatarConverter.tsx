@@ -260,6 +260,7 @@ export default function AvatarConverter() {
                       onCropComplete={onCropComplete}
                       cropShape="round"
                       showGrid={false}
+                      zoomWithScroll={false}
                     />
                   </div>
                 </div>
