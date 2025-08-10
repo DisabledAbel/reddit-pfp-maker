@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -34,6 +35,7 @@ export default function AvatarConverter() {
   );
   const [exportSize, setExportSize] = React.useState<number>(DEFAULT_EXPORT);
   const [processing, setProcessing] = React.useState(false);
+  const [spotlight, setSpotlight] = React.useState(false);
 
   const onCropComplete = React.useCallback((_: Area, croppedPixels: Area) => {
     setCroppedAreaPixels(croppedPixels);
@@ -262,6 +264,17 @@ export default function AvatarConverter() {
                       showGrid={false}
                       zoomWithScroll={false}
                     />
+                    {spotlight && (
+                      <div className="pointer-events-none absolute inset-0">
+                        <div
+                          className="absolute inset-0 transition-opacity duration-200"
+                          style={{
+                            background:
+                              "radial-gradient(circle at 50% 50%, transparent 40%, hsl(var(--background) / 0.82) 45%)",
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -274,6 +287,13 @@ export default function AvatarConverter() {
                     step={0.01}
                     onValueChange={([v]) => setZoom(v)}
                   />
+                </div>
+
+                <div className="mt-2 flex items-center justify-between">
+                  <label htmlFor="spotlight" className="text-sm font-medium">
+                    Spotlight mode
+                  </label>
+                  <Switch id="spotlight" checked={spotlight} onCheckedChange={setSpotlight} />
                 </div>
               </div>
             )}
