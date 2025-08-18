@@ -36,12 +36,13 @@ function resizeImageIfNeeded(
 }
 
 export const removeBackground = async (
-  imageElement: HTMLImageElement
+  imageElement: HTMLImageElement,
+  model: string = "briaai/RMBG-1.4"
 ): Promise<Blob> => {
   try {
     const segmenter = await pipeline(
       "image-segmentation",
-      "briaai/RMBG-1.4",
+      model,
       {
         device: "wasm",
       }

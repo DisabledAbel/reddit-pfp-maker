@@ -36,6 +36,7 @@ export default function AvatarConverter() {
   const [exportSize, setExportSize] = React.useState<number>(DEFAULT_EXPORT);
   const [processing, setProcessing] = React.useState(false);
   const [spotlight, setSpotlight] = React.useState(false);
+  const [selectedModel, setSelectedModel] = React.useState("briaai/RMBG-1.4");
 
   const onCropComplete = React.useCallback((_: Area, croppedPixels: Area) => {
     setCroppedAreaPixels(croppedPixels);
@@ -78,7 +79,7 @@ export default function AvatarConverter() {
     setProcessing(true);
     toast.message("Removing background… this may take ~10–20s");
     try {
-      const blob = await removeBackground(imageEl);
+      const blob = await removeBackground(imageEl, selectedModel);
       const url = fileToObjectURL(blob);
       setImageURL((prev) => {
         if (prev) URL.revokeObjectURL(prev);
@@ -294,6 +295,20 @@ export default function AvatarConverter() {
                     Spotlight mode
                   </label>
                   <Switch id="spotlight" checked={spotlight} onCheckedChange={setSpotlight} />
+                </div>
+
+                <div className="mt-3 space-y-2">
+                  <label className="text-sm font-medium">Background Removal Model</label>
+                  <Select value={selectedModel} onValueChange={setSelectedModel}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select AI model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="briaai/RMBG-1.4">RMBG-1.4 (Best for hair/details)</SelectItem>
+                      <SelectItem value="Xenova/u2net">U2Net (General purpose)</SelectItem>
+                      <SelectItem value="Xenova/segformer-b0-finetuned-ade-512-512">Segformer (Simple objects)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             )}
