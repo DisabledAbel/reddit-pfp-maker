@@ -41,7 +41,7 @@ export const removeBackground = async (
   try {
     const segmenter = await pipeline(
       "image-segmentation",
-      "Xenova/u2net",
+      "briaai/RMBG-1.4",
       {
         device: "wasm",
       }
