@@ -36,7 +36,7 @@ export default function AvatarConverter() {
   const [exportSize, setExportSize] = React.useState<number>(DEFAULT_EXPORT);
   const [processing, setProcessing] = React.useState(false);
   const [spotlight, setSpotlight] = React.useState(false);
-  const [selectedModel, setSelectedModel] = React.useState("briaai/RMBG-1.4");
+  const [selectedModel, setSelectedModel] = React.useState("Xenova/segformer-b0-finetuned-ade-512-512");
 
   const onCropComplete = React.useCallback((_: Area, croppedPixels: Area) => {
     setCroppedAreaPixels(croppedPixels);
@@ -304,9 +304,8 @@ export default function AvatarConverter() {
                       <SelectValue placeholder="Select AI model" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="briaai/RMBG-1.4">RMBG-1.4 (Best for hair/details)</SelectItem>
-                      <SelectItem value="Xenova/u2net">U2Net (General purpose)</SelectItem>
-                      <SelectItem value="Xenova/segformer-b0-finetuned-ade-512-512">Segformer (Simple objects)</SelectItem>
+                      <SelectItem value="Xenova/segformer-b0-finetuned-ade-512-512">Segformer (Best general purpose)</SelectItem>
+                      <SelectItem value="briaai/RMBG-1.4">RMBG-1.4 (Advanced model)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

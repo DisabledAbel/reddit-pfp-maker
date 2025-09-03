@@ -37,14 +37,14 @@ function resizeImageIfNeeded(
 
 export const removeBackground = async (
   imageElement: HTMLImageElement,
-  model: string = "briaai/RMBG-1.4"
+  model: string = "Xenova/segformer-b0-finetuned-ade-512-512"
 ): Promise<Blob> => {
   try {
     const segmenter = await pipeline(
       "image-segmentation",
       model,
       {
-        device: "wasm",
+        device: "webgpu",
       }
     );
 
