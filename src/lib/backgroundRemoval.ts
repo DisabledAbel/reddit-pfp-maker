@@ -42,10 +42,7 @@ export const removeBackground = async (
   try {
     const segmenter = await pipeline(
       "image-segmentation",
-      model,
-      {
-        device: "webgpu",
-      }
+      model
     );
 
     // Convert HTMLImageElement to canvas
