@@ -7,7 +7,6 @@ Make a perfect Reddit avatar in seconds. Upload any image, crop to a circle, opt
 - Round crop with live preview (react-easy-crop)
 - Zoom via slider (scroll/pinch zoom disabled for precision)
 - One-click "Make it fit" centered square crop
-- AI background removal (runs in your browser, uses WebGPU if available)
 - Guaranteed 256×256 WebP export with adaptive compression to target < 200KB
 - Dark mode with system preference + toggle
 - Toast notifications (sonner) and accessible UI (shadcn/ui + Tailwind)
