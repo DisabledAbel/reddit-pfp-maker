@@ -63,11 +63,6 @@ A lightweight and accessible tool to generate profile pictures for Reddit and ot
 - Extremely detailed or noisy images may exceed 200KB even after compression; the app will notify you.
 - Background removal quality varies by image content and device capabilities.
 
-## Project Scripts (common)
-- dev: start local development server
-- build: production build
-- preview: preview production build locally
-
 ## Contributing
 Pull requests are welcome. Keep components small, use the design tokens in src/index.css, and prefer semantic HTML with one H1 per page.
 
