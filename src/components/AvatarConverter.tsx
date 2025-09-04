@@ -36,7 +36,7 @@ export default function AvatarConverter() {
   const [exportSize, setExportSize] = React.useState<number>(DEFAULT_EXPORT);
   const [processing, setProcessing] = React.useState(false);
   const [spotlight, setSpotlight] = React.useState(false);
-  const [selectedModel, setSelectedModel] = React.useState("Xenova/segformer-b0-finetuned-ade-512-512");
+  
 
   const onCropComplete = React.useCallback((_: Area, croppedPixels: Area) => {
     setCroppedAreaPixels(croppedPixels);
@@ -79,7 +79,7 @@ export default function AvatarConverter() {
     setProcessing(true);
     toast.message("Removing background… this may take ~10–20s");
     try {
-      const blob = await removeBackground(imageEl, selectedModel);
+      const blob = await removeBackground(imageEl);
       const url = fileToObjectURL(blob);
       setImageURL((prev) => {
         if (prev) URL.revokeObjectURL(prev);
@@ -297,18 +297,6 @@ export default function AvatarConverter() {
                   <Switch id="spotlight" checked={spotlight} onCheckedChange={setSpotlight} />
                 </div>
 
-                <div className="mt-3 space-y-2">
-                  <label className="text-sm font-medium">Background Removal Model</label>
-                  <Select value={selectedModel} onValueChange={setSelectedModel}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select AI model" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Xenova/segformer-b0-finetuned-ade-512-512">Segformer (Best general purpose)</SelectItem>
-                      <SelectItem value="briaai/RMBG-1.4">RMBG-1.4 (Advanced model)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </div>
             )}
           </CardContent>
