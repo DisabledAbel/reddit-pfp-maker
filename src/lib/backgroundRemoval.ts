@@ -37,11 +37,11 @@ function resizeImageIfNeeded(
 
 export const removeBackground = async (
   imageElement: HTMLImageElement,
-  model: string = "Xenova/rembg-new"
+  model: string = "Xenova/modnet"
 ): Promise<Blob> => {
   try {
     const segmenter = await pipeline(
-      "image-segmentation",
+      "image-segmentation", 
       model
     );
 
@@ -79,9 +79,11 @@ export const removeBackground = async (
     const outputImageData = outputCtx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
     const data = outputImageData.data;
 
-    // Apply mask to alpha channel (keep subject, remove background)
+    // Apply mask to alpha channel (preserve subject, remove background)
     for (let i = 0; i < result[0].mask.data.length; i++) {
-      const alpha = Math.round(result[0].mask.data[i] * 255);
+      // Use the mask directly - higher values mean keep the pixel
+      const maskValue = result[0].mask.data[i];
+      const alpha = Math.round(maskValue * 255);
       data[i * 4 + 3] = alpha;
     }
 
