@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { removeBackground, loadImage } from "@/lib/backgroundRemoval";
+
 
 const DEFAULT_EXPORT = 256;
 
@@ -34,7 +34,7 @@ export default function AvatarConverter() {
     null
   );
   const [exportSize, setExportSize] = React.useState<number>(DEFAULT_EXPORT);
-  const [processing, setProcessing] = React.useState(false);
+  
   const [spotlight, setSpotlight] = React.useState(false);
   
 
@@ -53,11 +53,15 @@ export default function AvatarConverter() {
       return url;
     });
     try {
-      const img = await loadImage(file);
-      setImageEl(img);
-      setZoom(1);
-      setCrop({ x: 0, y: 0 });
-      toast.success("Image loaded");
+      const img = new Image();
+      img.onload = () => {
+        setImageEl(img);
+        setZoom(1);
+        setCrop({ x: 0, y: 0 });
+        toast.success("Image loaded");
+      };
+      img.onerror = () => toast.error("Failed to load image");
+      img.src = url;
     } catch (e) {
       toast.error("Failed to load image");
     }
@@ -74,26 +78,6 @@ export default function AvatarConverter() {
     if (file) onFile(file);
   };
 
-  const handleRemoveBg = async () => {
-    if (!imageEl) return;
-    setProcessing(true);
-    toast.message("Removing background… this may take ~10–20s");
-    try {
-      const blob = await removeBackground(imageEl);
-      const url = fileToObjectURL(blob);
-      setImageURL((prev) => {
-        if (prev) URL.revokeObjectURL(prev);
-        return url;
-      });
-      const img = await loadImage(blob);
-      setImageEl(img);
-      toast.success("Background removed");
-    } catch (e) {
-      toast.error("Background removal failed");
-    } finally {
-      setProcessing(false);
-    }
-  };
 
   const getCroppedCanvas = async (): Promise<HTMLCanvasElement> => {
     return new Promise((resolve, reject) => {
@@ -213,7 +197,7 @@ export default function AvatarConverter() {
       <section className="app-hero rounded-xl p-8 text-center text-primary-foreground">
         <h1 className="text-4xl font-extrabold tracking-tight">Reddit Profile Picture Converter</h1>
         <p className="mt-2 text-sm/6 opacity-90">
-          Upload, crop to a perfect circle, optionally remove background, and export as a crisp PNG.
+          Upload, crop to a perfect circle, and export as a crisp PNG.
         </p>
       </section>
 
@@ -305,26 +289,19 @@ export default function AvatarConverter() {
             <Button
               variant="secondary"
               onClick={reset}
-              disabled={!imageURL || processing}
+              disabled={!imageURL}
             >
               Reset
             </Button>
 
-            <Button onClick={makeItFit} disabled={!imageURL || processing}>
+            <Button onClick={makeItFit} disabled={!imageURL}>
               Make it fit
             </Button>
 
-            <Button onClick={handleDownload} disabled={!imageURL || processing}>
+            <Button onClick={handleDownload} disabled={!imageURL}>
               Download 256×256
             </Button>
 
-            <Button
-              variant="outline"
-              onClick={handleRemoveBg}
-              disabled={!imageURL || processing}
-            >
-              {processing ? "Processing…" : "Remove Background (AI)"}
-            </Button>
           </CardFooter>
         </Card>
 
