@@ -37,7 +37,7 @@ function resizeImageIfNeeded(
 
 export const removeBackground = async (
   imageElement: HTMLImageElement,
-  model: string = "Xenova/modnet"
+  model: string = "Xenova/segformer-b2-finetuned-ade-512-512"
 ): Promise<Blob> => {
   try {
     const segmenter = await pipeline(
@@ -60,7 +60,7 @@ export const removeBackground = async (
     // Process the image with the segmentation model
     const result = await segmenter(imageData);
 
-    if (!result || !Array.isArray(result) || result.length === 0 || !result[0].mask) {
+    if (!result || !Array.isArray(result) || result.length === 0) {
       throw new Error("Invalid segmentation result");
     }
 
@@ -75,15 +75,27 @@ export const removeBackground = async (
     // Draw original image
     outputCtx.drawImage(canvas, 0, 0);
 
-    // Apply the mask
+    // Apply the mask - only keep humans and pets
     const outputImageData = outputCtx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
     const data = outputImageData.data;
 
-    // Apply mask to alpha channel (preserve subject, remove background)
-    for (let i = 0; i < result[0].mask.data.length; i++) {
-      // Use the mask directly - higher values mean keep the pixel
-      const maskValue = result[0].mask.data[i];
-      const alpha = Math.round(maskValue * 255);
+    // Filter to keep only person and animal segments
+    const keepLabels = ["person", "cat", "dog", "bird", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe"];
+    
+    // Create combined mask for humans and pets only
+    const finalMask = new Float32Array(canvas.width * canvas.height).fill(0);
+    
+    for (const segment of result) {
+      if (segment.label && keepLabels.some(label => segment.label.toLowerCase().includes(label))) {
+        for (let i = 0; i < segment.mask.data.length; i++) {
+          finalMask[i] = Math.max(finalMask[i], segment.mask.data[i]);
+        }
+      }
+    }
+
+    // Apply the combined mask to alpha channel
+    for (let i = 0; i < finalMask.length; i++) {
+      const alpha = Math.round(finalMask[i] * 255);
       data[i * 4 + 3] = alpha;
     }
 
