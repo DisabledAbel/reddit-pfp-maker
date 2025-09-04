@@ -37,7 +37,7 @@ function resizeImageIfNeeded(
 
 export const removeBackground = async (
   imageElement: HTMLImageElement,
-  model: string = "Xenova/segformer-b0-finetuned-ade-512-512"
+  model: string = "Xenova/rembg-new"
 ): Promise<Blob> => {
   try {
     const segmenter = await pipeline(
