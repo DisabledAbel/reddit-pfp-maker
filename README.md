@@ -22,7 +22,9 @@ Make a perfect Reddit avatar in seconds. Upload any image, crop to a circle, opt
 
 # Reddit PFP Maker
 
-[![Install GitHub App](https://img.shields.io/badge/Install%20GitHub%20App-blue?style=for-the-badge&logo=github)](https://github.com/apps/reddit-pfp)
+<a href="https://reddit-pfp-maker.lovable.app" target="_blank" rel="noopener">
+  <img src="https://img.shields.io/badge/Open%20Reddit%20PFP%20Maker-%F0%9F%9A%80-success?style=for-the-badge" alt="Open App 🚀">
+</a>
 
 A lightweight and accessible tool to generate profile pictures for Reddit and other platforms.
 
