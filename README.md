@@ -30,18 +30,6 @@ A lightweight and accessible tool to generate profile pictures for Reddit and ot
 
 ---
 
-## How to Install
-
-1. **Click the button above** or [install here](https://github.com/apps/reddit-pfp).
-2. You’ll be taken to GitHub’s App installation page.
-3. Choose which repositories you want the app to access:
-   - **All repositories** (if you want it available everywhere), or
-   - **Only select repositories** (pick the ones you want).
-4. Click **Install**.
-5. The app will now be active on the chosen repositories and ready to use!
-
----
-
 
 ## How to Use
 1. Click "Choose File" (or drag & drop) to load an image.
